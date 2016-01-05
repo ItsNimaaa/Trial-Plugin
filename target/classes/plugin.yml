@@ -1,0 +1,14 @@
+name: Mineplex-Trial
+main: me.jakeythedev.mineplextrial.Engine
+version: 1.0
+commands:
+  a:
+    description: Contact an online staff member.
+  ma:
+    description: Reply to a player.
+  gems:
+    description: Set a users gems.
+  ranks:
+    description: Set a users rank.
+  preferences:
+    description: Open your prefrences.
