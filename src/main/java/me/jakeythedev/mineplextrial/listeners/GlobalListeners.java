@@ -142,7 +142,8 @@ public class GlobalListeners implements Listener
 		Player player = e.getPlayer();
 		PlayerData playerData = PlayerData.players.get(player);
 
-		e.setFormat(ChatColor.valueOf(playerData.colour) + "" + playerData.level + " " + 
-				Ranks.getPrefix(true, true, playerData.rank) + " " + ChatColor.YELLOW + player.getName() + " " + ChatColor.RESET + e.getMessage());
+		e.setFormat(ChatColor.valueOf(playerData.colour) + "" + playerData.level + " " + Ranks.getPrefix(true, true, playerData.rank) 
+			+ " " +
+				ChatColor.YELLOW + player.getName() + " " + ChatColor.RESET + e.getMessage());
 	}
 }

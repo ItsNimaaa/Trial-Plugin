@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -154,37 +153,19 @@ abstract class Database
 		{
 			openConnection();
 		}
-		Statement statement = Database.connection.createStatement();
-		ResultSet result = statement.executeQuery(query);
+		ResultSet result = Database.connection.prepareStatement(query).executeQuery();
 		return result;
 	}
 
-	protected static int updateDB(String update) throws SQLException, ClassNotFoundException
+	protected static PreparedStatement updateDB(String update) throws SQLException, ClassNotFoundException
 	{
 		if (!checkConnection())
 		{
 			openConnection();
 		}
-		Statement statement = Database.connection.createStatement();
-		int result = statement.executeUpdate(update);
-		return result;
-	}
-
-	public int[] sendBatchStatement(String[] stmts) throws SQLException, ClassNotFoundException
-	{
-		if (!checkConnection())
-		{
-			openConnection();
-		}
-		Statement statement = Database.connection.createStatement();
-		for (String state : stmts)
-		{
-			statement.addBatch(state);
-		}
-		int[] ResultCodes = statement.executeBatch();
-
-		Database.connection.commit();
-		return ResultCodes;
+		
+		PreparedStatement statement = connection.prepareStatement(update);
+		return statement;
 	}
 
 	public static Object getValue(UUID uuid, String key)
@@ -239,6 +220,7 @@ abstract class Database
 			{
 				openConnection();
 			}
+			
 			PreparedStatement sql = Database.connection.prepareStatement("SELECT * FROM `" + "MPTRIAL" + "` WHERE UUID=?;");
 			sql.setString(1, uuid.toString());
 			ResultSet resultSet = sql.executeQuery();

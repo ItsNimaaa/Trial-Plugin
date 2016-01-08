@@ -1,21 +1,16 @@
 package me.jakeythedev.mineplextrial;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.jakeythedev.mineplextrial.arcade.Arcade;
-import me.jakeythedev.mineplextrial.arcade.Game;
 import me.jakeythedev.mineplextrial.arcade.GameState;
 import me.jakeythedev.mineplextrial.arcade.GameType;
-import me.jakeythedev.mineplextrial.arcade.games.Runner;
-import me.jakeythedev.mineplextrial.arcade.games.Spleef;
 import me.jakeythedev.mineplextrial.arcade.guis.Listeners;
 import me.jakeythedev.mineplextrial.arcade.guis.Prefrences;
 import me.jakeythedev.mineplextrial.arcade.guis.PrefrencesGUI;
@@ -29,7 +24,6 @@ import me.jakeythedev.mineplextrial.ranks.commands.PreferencesCommand;
 import me.jakeythedev.mineplextrial.ranks.commands.RankSetCommand;
 import me.jakeythedev.mineplextrial.utilities.mysql.MySql;
 import me.jakeythedev.mineplextrial.utilities.mysql.playerdata.PlayerData;
-import me.jakeythedev.mineplextrial.utilities.packets.TabTitle;
 import me.jakeythedev.mineplextrial.utilities.scoreboard.ScoreboardManagers;
 import me.jakeythedev.mineplextrial.utilities.scoreboard.ScoreboardUtil;
 import me.jakeythedev.mineplextrial.utilities.world.WorldUtil;
@@ -47,8 +41,11 @@ public class Engine extends JavaPlugin implements Listener
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 
-		sql = new MySql(this, configuration.getString("IP"), configuration.getString("PORT"),
-				configuration.getString("DB"), configuration.getString("USERNAME"),
+		sql = new MySql(this,
+				configuration.getString("IP"),
+				configuration.getString("PORT"),
+				configuration.getString("DB"), 
+				configuration.getString("USERNAME"),
 				configuration.getString("PASSWORD"));
 
 		openConnection();
@@ -96,30 +93,56 @@ public class Engine extends JavaPlugin implements Listener
 		System.out.println("Mineplex-Trial disabled! Created by JakeyTheDev.");
 	}
 
+	@SuppressWarnings("deprecation")
 	public void openConnection()
 	{
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable()
+		try
 		{
-
-			@Override
-			public void run()
+			if (MySql.checkConnection() == false)
 			{
-				if (MySql.connection != null)
-				{
-					System.out.println("Still connected.");
-				}
-				else
-				{
-					try
-					{
-						MySql.openConnection();
-					} catch (ClassNotFoundException | SQLException e)
-					{
-						e.printStackTrace();
-					}
-				}
+
+				System.out.println("Not Connected to the SQL Servers!");
 
 			}
-		}, 0L, 250 * 20);
+			else
+			{
+
+				Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, new Runnable()
+				{
+
+					@Override
+					public void run()
+					{
+
+						try
+						{
+							if (MySql.openConnection().isClosed())
+							{
+								MySql.openConnection();
+							}
+							else
+							{
+								System.out.println("SQL connection still stable!");
+							}
+						}
+						catch (SQLException e)
+						{
+							System.out.println("SQL connection disabled by SQL Exception in Main");
+							e.printStackTrace();
+						}
+						catch (ClassNotFoundException e)
+						{
+							System.out.println("SQL connection disabled by ClassNotFound Exception in Main");
+							e.printStackTrace();
+						}
+
+					}
+				}, 500 * 20, 500 * 20);
+			}
+		} catch (SQLException e)
+		{
+			System.out.println("Could not connect to servers for SQL!");
+			e.printStackTrace();
+		}
 	}
 }
