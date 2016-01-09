@@ -21,7 +21,7 @@ public class PlayerData
 	protected String _name, _uuid;
 	public Ranks rank = Ranks.PLAYER;
 	public String colour = ChatColor.GRAY.name().toUpperCase();
-	public int level = 0, gems;
+	public int level, gems;
 
 	public PlayerData(Engine engine)
 	{

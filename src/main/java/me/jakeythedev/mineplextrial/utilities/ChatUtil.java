@@ -13,7 +13,6 @@ public enum ChatUtil
 	LEAVE("Leave", ChatColor.BLUE.toString()),
 
 	MESSAGE("Message", ChatColor.BLUE.toString()),
-	BROADCAST("Broadcast", ChatColor.BLUE.toString()),
 	ANNOUNCE("Announce", ChatColor.BLUE.toString()),
 	PERMISSION("Permissions", ChatColor.BLUE.toString()),
 	COMMAND("Command", ChatColor.BLUE.toString()),
@@ -21,8 +20,7 @@ public enum ChatUtil
 	
 	GAME("Game", ChatColor.BLUE.toString()),
 	
-	GEMS("Gems", ChatColor.GREEN.toString()),
-	COINS("Coins", ChatColor.GREEN.toString());
+	GEMS("Gems", ChatColor.GREEN.toString());
 	
 	private ChatUtil(String prefix, String colour)
 	{

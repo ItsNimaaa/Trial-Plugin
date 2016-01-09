@@ -3,7 +3,7 @@ package me.jakeythedev.mineplextrial;
 import java.sql.SQLException;
 
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -36,7 +36,7 @@ public class Engine extends JavaPlugin implements Listener
 	public void onEnable()
 	{
 
-		final Configuration configuration = getConfig();
+		final FileConfiguration configuration = getConfig();
 
 		getConfig().options().copyDefaults(true);
 		saveConfig();
@@ -44,7 +44,7 @@ public class Engine extends JavaPlugin implements Listener
 		sql = new MySql(this,
 				configuration.getString("IP"),
 				configuration.getString("PORT"),
-				configuration.getString("DB"), 
+				configuration.getString("DB"),
 				configuration.getString("USERNAME"),
 				configuration.getString("PASSWORD"));
 
@@ -124,13 +124,11 @@ public class Engine extends JavaPlugin implements Listener
 							{
 								System.out.println("SQL connection still stable!");
 							}
-						}
-						catch (SQLException e)
+						} catch (SQLException e)
 						{
 							System.out.println("SQL connection disabled by SQL Exception in Main");
 							e.printStackTrace();
-						}
-						catch (ClassNotFoundException e)
+						} catch (ClassNotFoundException e)
 						{
 							System.out.println("SQL connection disabled by ClassNotFound Exception in Main");
 							e.printStackTrace();

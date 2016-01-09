@@ -108,32 +108,5 @@ abstract class Database
 		} catch (Exception e)
 		{ }
 	}
-
-	public static boolean accountExists(UUID uuid, String string)
-	{
-		try
-		{
-			if (!checkConnection())
-			{
-				openConnection();
-			}
-
-			PreparedStatement sql = Database.connection.prepareStatement("SELECT * FROM `" + "MPTRIAL" + "` WHERE UUID=?;");
-			sql.setString(1, uuid.toString());
-			ResultSet resultSet = sql.executeQuery();
-			boolean containsPlayer = resultSet.next();
-
-			sql.close();
-			resultSet.close();
-
-			return containsPlayer;
-
-		} catch (Exception e)
-		{
-			e.printStackTrace();
-
-			return false;
-		}
-	}
 }
 

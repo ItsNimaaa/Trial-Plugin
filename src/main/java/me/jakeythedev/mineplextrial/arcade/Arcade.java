@@ -22,6 +22,7 @@ import me.jakeythedev.mineplextrial.arcade.games.Spleef;
 import me.jakeythedev.mineplextrial.arcade.guis.Prefrences;
 import me.jakeythedev.mineplextrial.utilities.ChatUtil;
 import me.jakeythedev.mineplextrial.utilities.ItemUtil;
+import me.jakeythedev.mineplextrial.utilities.mysql.playerdata.PlayerData;
 import me.jakeythedev.mineplextrial.utilities.packets.ActionBar;
 import me.jakeythedev.mineplextrial.utilities.packets.Title;
 import me.jakeythedev.mineplextrial.utilities.world.WorldUtil;
@@ -314,12 +315,24 @@ public class Arcade
 				}
 			} 
 		}
+		
 		ChatUtil.broadcast(ChatColor.DARK_AQUA.toString() + ChatColor.STRIKETHROUGH + "=====================================", ChatUtil.NONE);
 		for (Player all : Bukkit.getOnlinePlayers())
 		{
 
 			Title.sendTitle(all, ChatColor.DARK_AQUA + _positions.get(1).getName(), ChatColor.AQUA + "Won the game!");
 			removeSpectator(all);
+		}
+		
+		ChatUtil.message(_positions.get(1), "You've won 500 gems for coming first!", ChatUtil.GEMS);
+		PlayerData.players.get(_positions.get(1)).gems = PlayerData.players.get(_positions.get(1)).gems + 500;
+		ChatUtil.message(_positions.get(2), "You've won 350 gems for coming first!", ChatUtil.GEMS);
+		PlayerData.players.get(_positions.get(2)).gems = PlayerData.players.get(_positions.get(2)).gems + 350;
+		
+		if (_positions.size() == 3) 
+		{
+			ChatUtil.message(_positions.get(3), "You've won 150 gems for coming first!", ChatUtil.GEMS);
+			PlayerData.players.get(_positions.get(3)).gems = PlayerData.players.get(_positions.get(3)).gems + 150;
 		}
 
 		gamestate = GameState.ENDING;
