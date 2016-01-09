@@ -54,7 +54,7 @@ abstract class Database
 		return result;
 	}
 
-	protected static PreparedStatement updateDB(String update) throws SQLException, ClassNotFoundException
+	protected static int updateDB(String update) throws SQLException, ClassNotFoundException
 	{
 		if (!checkConnection())
 		{
@@ -62,7 +62,8 @@ abstract class Database
 		}
 
 		PreparedStatement statement = connection.prepareStatement(update);
-		return statement;
+		int result = statement.executeUpdate(update);
+		return result;
 	}
 
 	public static Object getValue(UUID uuid, String key)

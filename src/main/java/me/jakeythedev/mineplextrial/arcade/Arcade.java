@@ -2,7 +2,6 @@ package me.jakeythedev.mineplextrial.arcade;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.channels.GatheringByteChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;

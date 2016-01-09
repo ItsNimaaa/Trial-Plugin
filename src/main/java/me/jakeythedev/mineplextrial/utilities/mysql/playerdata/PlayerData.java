@@ -101,8 +101,7 @@ public class PlayerData
 			{
 
 				MySql.update("INSERT INTO `" + "MPTRIAL" + "` (`UUID`, `NAME`, `RANK`, `GEMS`, `COLOUR`, `LEVEL`) "
-						+ "VALUES "
-						+ "('" + s + "', '" + s1 + "', '" + this.rank + "', '" + this.gems + "', '" + this.colour + "', '" + this.level + "');");
+						+ "VALUES " + "('" + s + "', '" + s1 + "', '" + this.rank + "', '" + this.gems + "', '" + this.colour + "', '" + this.level + "');");
 			}
 		}
 		catch (Exception e)

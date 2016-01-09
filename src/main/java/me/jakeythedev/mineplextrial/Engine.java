@@ -102,7 +102,13 @@ public class Engine extends JavaPlugin implements Listener
 			{
 
 				System.out.println("Not Connected to the SQL Servers!");
-
+				try
+				{
+					MySql.openConnection();
+				} catch (ClassNotFoundException e)
+				{
+					System.out.println("Connection opened between your server and MYSQL database.");
+				}
 			}
 			else
 			{
@@ -133,9 +139,8 @@ public class Engine extends JavaPlugin implements Listener
 							System.out.println("SQL connection disabled by ClassNotFound Exception in Main");
 							e.printStackTrace();
 						}
-
 					}
-				}, 500 * 20, 500 * 20);
+				}, 250 * 20, 250 * 20);
 			}
 		} catch (SQLException e)
 		{

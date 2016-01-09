@@ -105,7 +105,7 @@ public class PrefrencesGUI
 
 	public void buildColours(Player player)
 	{
-		_colours = Bukkit.createInventory(null, 9 * 3, "Your current colour: "
+		_colours = Bukkit.createInventory(null, 9 * 4, "Your current colour: "
 				+ ChatColor.valueOf(PlayerData.players.get(player).colour.toString().toUpperCase()));
 
 		for (ChatColor c : ChatColor.values())
@@ -113,31 +113,15 @@ public class PrefrencesGUI
 
 			String character = "" + c.getChar();
 
-			try
-			{
-				Integer.parseInt(character);
-			} catch (Exception e)
-			{
-				continue;
-			}
-
-			String name = "";
-			boolean first = true;
-			for (char chars : c.toString().toCharArray())
-			{
-				if (first)
-				{
-					name = String.valueOf(chars).toUpperCase();
-					first = !first;
-					continue;
-				}
-
-				name += String.valueOf(chars).toLowerCase();
-			}
-
-			_colours.addItem(ItemUtil.createItem(Material.STAINED_GLASS, 1, (byte) 2,
+			_colours.addItem(ItemUtil.createItem(Material.PACKED_ICE, 1, (byte) 9,
 					c + ChatColor.getByChar(character).name().toUpperCase(),
-					Arrays.asList("", ChatColor.AQUA + "Click to choose this colour!")));
+					Arrays.asList("", ChatColor.AQUA + "Click to choose this option!")));
+			
+			_colours.setItem(35, ItemUtil.createItem(Material.ICE, 1, (byte) 0,
+					ChatColor.RED.toString() + ChatColor.BOLD + "RECOMMEND",
+					Arrays.asList("", 
+							ChatColor.AQUA + "It is recommended not to click anything other than coloured.",
+							ChatColor.AQUA + "This is only for the best results.")));
 		}
 
 		player.openInventory(_colours);

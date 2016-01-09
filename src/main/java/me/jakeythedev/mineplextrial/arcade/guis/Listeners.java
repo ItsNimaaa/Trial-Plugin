@@ -8,7 +8,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -33,21 +32,15 @@ public class Listeners implements Listener
 		_prefsGUI = prefGUI;
 	}
 
-	private GameState _gamestate;
-
 	@EventHandler
 	public void onCompass(PlayerInteractEvent e)
 	{
 		Player player = e.getPlayer();
 		if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)
 		{
-			if (e.getItem().getType() == Material.COMPASS && e.getItem() != null)
+			if (player.getItemInHand().getType() == Material.COMPASS && e.getItem() != null)
 			{
 				_spec.build(player);
-			}
-			else
-			{
-				return;
 			}
 		}
 	}
@@ -64,8 +57,6 @@ public class Listeners implements Listener
 
 		if (e.getInventory() != null || e.getInventory().getName().equals(_spec.getInventory().getName()))
 		{
-			if (e.getInventory().getType() == InventoryType.PLAYER)
-				return;
 
 			if (item != null && item.getType() != null && item.getType() != Material.AIR)
 			{
@@ -106,18 +97,21 @@ public class Listeners implements Listener
 				e.setCancelled(true);
 				switch (item.getType())
 				{
+				
 				/*
 				 * / PLAYER
 				 */
 
 				case BLAZE_ROD:
 					_prefs.inLevelChoose.put(player, true);
+					ChatUtil.message(player, "Talking disabled, you can now talk to choose a level. ", ChatUtil.GAME);
+					ChatUtil.message(player, " ", ChatUtil.NONE);
 					ChatUtil.message(player, "What level would you like to be? ", ChatUtil.GAME);
 					player.closeInventory();
 					break;
 
 				/*
-				 * / STAFF
+				 * / TRAINEE +
 				 */
 
 				case EMERALD:
@@ -172,9 +166,7 @@ public class Listeners implements Listener
 
 					if (level > 100 || level < 0)
 					{
-						ChatUtil.message(player,
-								"You have been removed from the level choosing system due to an error (levels cannot be over 100 or below 0!).",
-								ChatUtil.GAME);
+						ChatUtil.message(player, "You can now speak again. Please note: You cannot be above 100 or below 0.", ChatUtil.GAME);
 						_prefs.inLevelChoose.remove(player);
 						return;
 					}
@@ -183,6 +175,7 @@ public class Listeners implements Listener
 
 					_prefsGUI.buildColours(player);
 					_prefs.inLevelChoose.remove(player);
+					
 				} catch (Exception exe)
 				{
 					ChatUtil.message(player, "Not an Integer.", ChatUtil.GAME);
@@ -208,15 +201,14 @@ public class Listeners implements Listener
 
 				e.setCancelled(true);
 
-				if (item.getType() == Material.STAINED_GLASS)
+				if (item.getType() == Material.PACKED_ICE)
 				{
 					PlayerData.players.get(player).colour = ChatColor.stripColor(item.getItemMeta().getDisplayName());
-					ChatUtil.message(player,
-							"You have selected the colour, " + item.getItemMeta().getDisplayName() + "!",
-							ChatUtil.GAME);
+					ChatUtil.message(player, "You have selected, " + item.getItemMeta().getDisplayName() + ChatColor.WHITE + "!", ChatUtil.GAME);
 
 					player.closeInventory();
-				}
+				} else if (item.getType() == Material.ICE) 
+					return;
 			}
 		}
 	}
